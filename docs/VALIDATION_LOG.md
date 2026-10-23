@@ -78,6 +78,19 @@ Decision: build the n8n agency handover wedge. The AI register is the differenti
 - Agency scope creep: Docket $79/$199.
 - AI automation monitoring: Cohesiva, PolarSentry, Hellhound, RootBrief, Norevin, Burrow, ProofMyAI.
 
+## Real workflow parser check
+
+- Source: https://github.com/nusquama/n8nworkflows.xyz
+- Checked: 2026-10-24.
+- What it is: three public n8n workflow exports, used to test the parser and handover output. No customer workflow was used. No secret value is reproduced here.
+- Export 1, "Onboarding": 20 nodes, 2 entry points (manual start and Google Sheets trigger) plus an error handler. 1 AI step (Google, `models/gemini-2.0-flash`). Score 56, not ready. High findings: AI can act without approval; personal data goes to AI. Medium: multiple triggers. Low: no execution timeout, orphan nodes. Info: no timezone.
+- Export 2, "AI-Powered Customer Support: Email, Knowledge Base & Human Escalation Automation": 23 steps, 5 AI steps (Google and OpenAI; model names not set in the export), 2 entry points. Score 0, not ready. 11 high findings: 5 AI steps can act without approval, 5 AI steps have no failure path, 1 personal-data-to-AI finding. Medium: 5 models not visible in the export, multiple triggers, no error workflow. Low: no execution timeout, no notes, orphan nodes. Info: no timezone.
+- Export 3, "CrunchBase Invester Data": 4 steps, schedule trigger, no AI. Score 78, review. Medium: HTTP request has no timeout; no error workflow. Low: HTTP request has no retry; no execution timeout. Info: no timezone. The placeholder `Bearer YOUR_CRUNCHBASE_API_KEY` is not flagged as a hardcoded secret.
+- Parser fixes from this check: error triggers no longer count as entry points; a Slack human-escalation step is not treated as an approval gate; placeholder bearer tokens are ignored; connected `ai_languageModel` nodes resolve the model and provider; model, embedding, vector, loader, splitter, memory and tool nodes are resources, not AI action steps.
+- Limit: export 2 hides the model names in empty model-node parameters. The pack shows the provider from the connection type and "Not set in export" for the model. That is honest, but it shows why agencies should document the model in the node or notes.
+- Strength: 3 real workflows prove the parser survives messy exports and exposed four false positives. They do not prove willingness to pay. Customer workflows are still needed.
+- Production check: on 2026-10-24, a fresh production account created a pack from export 2. The public page showed 5 AI steps and 11 high-severity findings. Account deletion returned 200, the share link returned 404, and login after deletion returned 401.
+
 ## Billing facts
 
 - URL: https://docs.lemonsqueezy.com/help/getting-started/supported-countries
@@ -87,6 +100,15 @@ Decision: build the n8n agency handover wedge. The AI register is the differenti
 
 - Stripe India: invite-only per the brief and the Lemon Squeezy footnote. Not assumed.
 - Paddle: seller eligibility for India was not verified in this session. The page fetched was about buyer countries. Do not claim Paddle works.
+
+## Public copy check
+
+- Checked: 2026-10-24.
+- Removed "small pilot with automation agencies" and "priority feedback line" because neither is true yet.
+- Softened "every model" to "each AI step, with its provider and model where the export exposes them".
+- Changed "everything the handover call needs" to "the handover call, in one page".
+- No customer count, revenue, compliance certification or testimonial claim is on the public pages.
+- Verified on production after deploy: the home and pricing pages no longer contain "small pilot", "priority feedback" or "everything the handover call needs".
 
 ## Assumptions still untested
 

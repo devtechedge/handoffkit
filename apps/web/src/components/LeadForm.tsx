@@ -41,7 +41,7 @@ export function LeadForm({ source = "pricing" }: { source?: string }) {
     return (
       <div className="notice notice-success">
         <strong>You are on the list.</strong>
-        <p>We will reach out when a pilot slot opens. No newsletter, no drip sequence.</p>
+        <p>We will reach out when billing opens. No newsletter, no drip sequence.</p>
       </div>
     );
   }

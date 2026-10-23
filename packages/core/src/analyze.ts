@@ -363,6 +363,17 @@ function isAiNode(node: N8nNode): boolean {
   );
 }
 
+function isAiActionNode(node: N8nNode): boolean {
+  if (!isAiNode(node)) return false;
+  const type = node.type.toLowerCase();
+  if (/lmchat|embeddings|vectorstore|documentdefaultdataloader|textsplitter|reranker|memory|tool/.test(type)) {
+    return false;
+  }
+  return /agent|chain|textclassifier|sentimentanalysis|informationextractor|openai|anthropic|gemini|claude|llm/.test(
+    type,
+  );
+}
+
 function triggerInfo(node: N8nNode): TriggerInfo {
   const type = node.type.toLowerCase();
   const params = node.parameters ?? {};
@@ -434,13 +445,24 @@ function triggerPhrase(trigger: TriggerInfo): string {
 
 function isApprovalNode(node: N8nNode): boolean {
   const type = node.type.toLowerCase();
-  if (/approv|review|human|confirm|sign.?off/i.test(node.name)) return true;
+  if (/approv|review|confirm|sign.?off/i.test(node.name)) return true;
   if (type.includes("approval")) return true;
   if (type.includes("wait")) {
     const resume = asString(node.parameters?.resume);
     return resume === "webhook" || resume === "form";
   }
   return false;
+}
+
+function isErrorTrigger(node: N8nNode): boolean {
+  return node.type.toLowerCase().includes("errortrigger");
+}
+
+function isPlaceholderSecret(value: string): boolean {
+  const token = value.replace(/^Bearer\s+/i, "").trim();
+  return /^(?:YOUR|REPLACE|EXAMPLE|PLACEHOLDER|CHANGEME|CHANGE_ME|INSERT|PASTE|TODO|SAMPLE|DEMO|NOT_REAL)[A-Z0-9_ -]*$/i.test(
+    token,
+  );
 }
 
 function collectLeaves(value: unknown, path: string, out: Leaf[], depth = 0): void {
@@ -657,8 +679,8 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
   const nodes = workflow.nodes;
   const realNodes = nodes.filter((node) => !isSticky(node));
   const settings = workflow.settings ?? {};
-  const errorTrigger = nodes.some((node) => node.type.toLowerCase().includes("errortrigger"));
-  const hasErrorWorkflow = Boolean(asString(settings.errorWorkflow)) || errorTrigger;
+  const errorTriggerNodes = nodes.filter(isErrorTrigger);
+  const hasErrorWorkflow = Boolean(asString(settings.errorWorkflow)) || errorTriggerNodes.length > 0;
 
   const notes: PackNote[] = nodes
     .filter(isSticky)
@@ -687,8 +709,11 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
     outgoing.set(source, targets);
   }
 
-  const triggerNodes = nodes.filter((node) => isTrigger(node) && !isSticky(node));
-  const triggers = triggerNodes.map(triggerInfo);
+  const triggerNodes = nodes.filter(
+    (node) => isTrigger(node) && !isSticky(node) && !isErrorTrigger(node),
+  );
+  const entryTriggers = triggerNodes.map(triggerInfo);
+  const triggers = [...entryTriggers, ...errorTriggerNodes.map(triggerInfo)];
 
   const order: N8nNode[] = [];
   const seen = new Set<string>();
@@ -715,8 +740,25 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
   }
 
   const aiNodes = realNodes.filter(isAiNode);
+  const aiActionNodes = aiNodes.filter(isAiActionNode);
+  const aiModelByTarget = new Map<string, N8nNode>();
+  for (const [source, connection] of Object.entries(workflow.connections ?? {})) {
+    const sourceNode = nodes.find((item) => item.name === source);
+    if (!sourceNode) continue;
+    for (const group of connection.ai_languageModel ?? []) {
+      for (const target of group ?? []) {
+        if (target?.node) aiModelByTarget.set(target.node, sourceNode);
+      }
+    }
+  }
+  const modelForNode = (node: N8nNode): string | undefined => {
+    const direct = findModel(node.parameters);
+    if (direct) return direct;
+    const source = aiModelByTarget.get(node.name);
+    return source ? findModel(source.parameters) : undefined;
+  };
   const aiDownstream = new Map<string, Set<string>>();
-  for (const ai of aiNodes) {
+  for (const ai of aiActionNodes) {
     const reachable = new Set<string>();
     const stack = [...(outgoing.get(ai.name) ?? [])];
     while (stack.length > 0) {
@@ -731,8 +773,8 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
   const approvalNode = realNodes.find(isApprovalNode);
   const waitNode = realNodes.find((node) => node.type.toLowerCase().includes("wait"));
 
-  const aiSystems: AiSystem[] = aiNodes.map((node) => {
-    const model = findModel(node.parameters) ?? "Not set in export";
+  const aiSystems: AiSystem[] = aiActionNodes.map((node) => {
+    const model = modelForNode(node) ?? "Not set in export";
     const downstream = aiDownstream.get(node.name) ?? new Set<string>();
     const canAct = [...downstream].some((name) => {
       const target = nodes.find((item) => item.name === name);
@@ -741,7 +783,7 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
     const categories = categoriesFor(nodes, notes).map((category) => category.label);
     return {
       node: node.name,
-      provider: providerFor(node, model),
+      provider: providerFor(aiModelByTarget.get(node.name) ?? node, model),
       model,
       purpose: clampText(node.notes ?? node.name, 160),
       dataCategories: categories.length > 0 ? categories : ["No personal data categories detected"],
@@ -800,7 +842,12 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
       if (typeof leaf.value !== "string" || leaf.value.length < 8) continue;
       const value = leaf.value;
       const lower = value.toLowerCase();
-      if (/your[_-]?api|example|placeholder|change[_-]?me|xxxx|demo|not[_-]?a[_-]?real/.test(lower)) continue;
+      if (
+        isPlaceholderSecret(value) ||
+        /your[_-]?api|example|placeholder|change[_-]?me|xxxx|demo|not[_-]?a[_-]?real/.test(lower)
+      ) {
+        continue;
+      }
       if (value.startsWith("={{") || value.startsWith("{{")) continue;
       for (const pattern of SECRET_PATTERNS) {
         if (pattern.re.test(value)) {
@@ -839,7 +886,7 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
     );
   }
 
-  for (const ai of aiNodes) {
+  for (const ai of aiActionNodes) {
     const hasNodeError = Boolean(ai.onError || ai.continueOnFail || ai.retryOnFail);
     if (!hasNodeError && !hasErrorWorkflow) {
       addFinding(
@@ -851,7 +898,7 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
         ai.name,
       );
     }
-    if (findModel(ai.parameters) === undefined) {
+    if (modelForNode(ai) === undefined) {
       addFinding(
         "ai_model_not_in_export",
         "medium",
@@ -1057,11 +1104,11 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
 
   const workflowName = cleanName(workflow.name, "This workflow");
   const triggerSentence =
-    triggers.length === 0
+    entryTriggers.length === 0
       ? `${workflowName} has no detected trigger.`
-      : triggers.length === 1
-        ? `${workflowName} starts from ${triggerPhrase(triggers[0]!)}.`
-        : `${workflowName} has ${triggers.length} entry points.`;
+      : entryTriggers.length === 1
+        ? `${workflowName} starts from ${triggerPhrase(entryTriggers[0]!)}.`
+        : `${workflowName} has ${entryTriggers.length} entry points.`;
 
   const aiSummary =
     aiSystems.length === 0
@@ -1187,7 +1234,7 @@ export function analyzeWorkflow(input: unknown, options: AnalyzeOptions = {}): P
       name: cleanName(workflow.name, "Untitled workflow"),
       nodeCount: realNodes.length,
       triggerCount: triggerNodes.length,
-      aiNodeCount: aiNodes.length,
+      aiNodeCount: aiActionNodes.length,
       credentialCount: credentials.size,
       disabledCount: disabled.length,
       integrationCount: systems.length,

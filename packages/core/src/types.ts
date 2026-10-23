@@ -143,6 +143,7 @@ export interface N8nConnectionTarget {
 
 export interface N8nConnection {
   main?: N8nConnectionTarget[][];
+  ai_languageModel?: N8nConnectionTarget[][];
 }
 
 export interface N8nWorkflow {

@@ -47,17 +47,22 @@ export default function PrivacyPage() {
 
       <h2>Retention</h2>
       <p>
-        Packs stay until you delete them or close your account. Account details stay while the
+        Packs stay until you delete them or delete your account. Account details stay while the
         account is open. Leads and feedback stay while we need them to respond. Security logs are
-        kept for a limited period. Backup copies expire on the provider’s schedule.
+        kept for a limited period. Backup copies expire on the provider's schedule.
+      </p>
+      <p>
+        When you delete your account, we remove the account, sessions, packs, projects,
+        subscriptions, feedback and usage events linked to it. Leads with the same email are
+        removed. A small anonymised deletion event may remain for operational records.
       </p>
 
       <h2>Your choices</h2>
       <p>
-        You can delete a pack from the dashboard, correct your agency details in settings, or ask
-        us to close the account. Depending on where you live, you may also have rights to access,
-        correct, export or object to processing. Use the <a href="/contact">contact page</a> and we
-        will respond within a reasonable period.
+        You can delete a pack from the dashboard, correct your agency details in settings, or
+        delete your account in settings. Depending on where you live, you may also have rights to
+        access, correct, export or object to processing. Use the{" "}
+        <a href="/contact">contact page</a> and we will respond within a reasonable period.
       </p>
 
       <h2>Security</h2>

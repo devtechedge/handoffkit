@@ -86,7 +86,7 @@ export default async function DashboardPage() {
         <div className="notice notice-warm dashboard-notice">
           <div>
             <strong>You have used your free pack.</strong>
-            <p>Upgrade when you need the next client handover. Billing opens with the pilot.</p>
+            <p>Upgrade when you need the next client handover. Billing opens after early-access testing.</p>
           </div>
           <a className="btn btn-primary btn-sm" href="/pricing">
             See Pro

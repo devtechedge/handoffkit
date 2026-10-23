@@ -255,6 +255,28 @@ svg {
   color: var(--red);
 }
 
+.btn-danger {
+  background: var(--red);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #8c2f29;
+}
+
+.danger-confirm {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
 .site-header {
   position: sticky;
   top: 0;

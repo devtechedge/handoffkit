@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import { FeedbackForm } from "@/components/FeedbackForm";
 import { LogoutButton } from "@/components/LogoutButton";
 import { SettingsForm } from "@/components/SettingsForm";
@@ -70,6 +71,15 @@ export default async function SettingsPage() {
               The next improvement comes from a real handover, not a roadmap vote.
             </p>
             <FeedbackForm compact />
+          </div>
+
+          <div className="panel side-panel">
+            <p className="eyebrow">Danger zone</p>
+            <h2>Delete account</h2>
+            <p className="muted">
+              This removes your account and every pack. Share links stop working.
+            </p>
+            <DeleteAccountButton />
           </div>
         </aside>
       </div>

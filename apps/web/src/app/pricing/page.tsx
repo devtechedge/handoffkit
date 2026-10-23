@@ -81,7 +81,6 @@ export default async function PricingPage() {
                   <li>Custom agency name and accent</li>
                   <li>PDF and Markdown exports</li>
                   <li>No HandoffKit footer</li>
-                  <li>Priority feedback line</li>
                 </ul>
 
                 {plan === "pro" ? (
@@ -116,10 +115,10 @@ export default async function PricingPage() {
             <div className="container split">
               <div>
                 <p className="eyebrow">Billing is not open yet</p>
-                <h2>Pro is priced. Checkout opens with the pilot.</h2>
+                <h2>Pro is priced. Checkout opens after early-access testing.</h2>
                 <p className="section-lede">
-                  HandoffKit is in a small pilot with automation agencies. Join the list if you
-                  want a slot when billing opens. No newsletter, no drip sequence.
+                  HandoffKit is in early access. Join the list if you want a slot when billing
+                  opens. No newsletter, no drip sequence.
                 </p>
                 <p className="microcopy">
                   The product is usable now on the free plan. The paid plan is not being sold until

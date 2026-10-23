@@ -104,3 +104,11 @@ Decision: Use the existing Vercel/Neon database from the keyward project with a 
 Why: no new database account or CLI login is available, and this keeps data separate at the schema level.
 Rejected: new Neon project (needs account access), SQLite (no durable serverless storage).
 Revisit before paid launch: move to a dedicated Neon project and separate credentials.
+
+## D14. Self-serve account deletion
+
+Date: 2026-10-24.
+Decision: Add `DELETE /api/account` with a typed `DELETE` confirmation. It removes the account, sessions, packs, projects and subscriptions, plus feedback, leads and usage events tied to the account. Pro accounts must cancel first.
+Why: privacy promises need a working path, not an email request. The typed confirmation makes an accidental click less likely.
+Rejected: email-only deletion, soft delete that leaves share links live.
+Revisit when Lemon Squeezy checkout opens: add a direct billing portal link before deletion.

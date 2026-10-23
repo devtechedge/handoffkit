@@ -13,12 +13,12 @@ const features = [
   {
     number: "02",
     title: "An AI register",
-    body: "Every model, provider, purpose, data category and human gate in one client-readable table.",
+    body: "Each AI step, with its provider and model where the export exposes them, plus purpose, data categories and human gate.",
   },
   {
     number: "03",
     title: "A workflow map",
-    body: "Each node in execution order, with its role, error handling and the notes the next maintainer needs.",
+    body: "Each node in a readable order, with its role, error handling and the notes the next maintainer needs.",
   },
   {
     number: "04",
@@ -157,8 +157,8 @@ export default async function HomePage() {
         <section className="section section-tint">
           <div className="container">
             <div className="section-head">
-              <p className="eyebrow">What is in every pack</p>
-              <h2>Everything the handover call needs. Nothing it does not.</h2>
+              <p className="eyebrow">What a pack covers</p>
+              <h2>The handover call, in one page.</h2>
             </div>
             <div className="grid-3 features-grid">
               {features.map((feature) => (
@@ -235,8 +235,8 @@ export default async function HomePage() {
               <p className="eyebrow">Simple pricing</p>
               <h2>Start with one handover. Upgrade when it earns its place.</h2>
               <p className="section-lede">
-                Pro is for agencies that hand over client work every month. Billing opens for
-                pilot customers first.
+                Pro is for agencies that hand over client work every month. Billing opens after
+                early-access testing.
               </p>
             </div>
             <div className="pricing-grid">
@@ -270,7 +270,6 @@ export default async function HomePage() {
                   <li>Custom agency name and accent</li>
                   <li>PDF and Markdown exports</li>
                   <li>No HandoffKit footer</li>
-                  <li>Priority feedback line</li>
                 </ul>
                 <a className="btn btn-primary btn-block" href="/pricing">
                   See Pro

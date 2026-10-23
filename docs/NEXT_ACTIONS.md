@@ -1,6 +1,6 @@
 # Next actions
 
-Updated: 2026-10-23.
+Updated: 2026-10-24.
 
 ## Now
 
@@ -8,9 +8,10 @@ Updated: 2026-10-23.
 - [x] Run `npm test`, `npm run typecheck` and `npm run build`.
 - [x] Set the `handoffkit` schema up in the shared Neon database.
 - [x] Deploy to Vercel and verify signup, pack creation, share page and PDF: https://handoffkit-seven.vercel.app
-- [ ] Check the live demo with three real n8n exports after secrets are removed.
-- [ ] Write the outreach template and a 20-agency target list. Do not send.
-- [ ] Write the n8n community post draft. Do not post.
+- [x] Check three real n8n exports after secrets are removed.
+- [x] Deploy the real-export parser fixes and verify production again.
+- [x] Write the outreach template and a 20-agency target list. Do not send.
+- [x] Write the n8n community post draft. Do not post.
 - [ ] Ask Dev for approval on outreach, community post and domain purchase.
 
 ## Billing
@@ -32,10 +33,10 @@ Updated: 2026-10-23.
 
 ## Trust and safety
 
-- [ ] Review every public claim for a source.
+- [x] Review every public claim for a source.
 - [x] Add a secret-scanning test with a known fake key to prove it never reaches output.
 - [x] Add rate limits to signup, login, demo and feedback.
-- [ ] Add a data retention note and a delete-account path.
+- [x] Add a data retention note and a delete-account path.
 - [ ] Move to a dedicated Neon project and credentials before paid launch.
 - [ ] Have terms and privacy reviewed by a professional.
 
