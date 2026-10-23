@@ -109,6 +109,7 @@ Decision: build the n8n agency handover wedge. The AI register is the differenti
 - Changed "everything the handover call needs" to "the handover call, in one page".
 - No customer count, revenue, compliance certification or testimonial claim is on the public pages.
 - Verified on production after deploy: the home and pricing pages no longer contain "small pilot", "priority feedback" or "everything the handover call needs".
+- Git-triggered production deploy from `a3b6376` verified: health 200, signup 200, settings delete UI, pack from real export 200, public page 200 with 5 AI steps and 11 high-severity findings, delete 200, public page 404, login 401.
 
 ## Assumptions still untested
 

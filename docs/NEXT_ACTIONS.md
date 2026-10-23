@@ -12,7 +12,7 @@ Updated: 2026-10-24.
 - [x] Deploy the real-export parser fixes and verify production again.
 - [x] Write the outreach template and a 20-agency target list. Do not send.
 - [x] Write the n8n community post draft. Do not post.
-- [ ] Ask Dev for approval on outreach, community post and domain purchase.
+- [x] Ask Dev for approval on outreach, community post and domain purchase. Dev chose drafts only and no domain yet.
 
 ## Billing
 
