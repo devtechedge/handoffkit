@@ -1,4 +1,5 @@
 import { Logo } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteHeader({ signedIn = false }: { signedIn?: boolean }) {
   return (
@@ -11,6 +12,7 @@ export function SiteHeader({ signedIn = false }: { signedIn?: boolean }) {
           <a href="/pricing">Pricing</a>
         </nav>
         <div className="header-actions">
+          <ThemeToggle />
           {signedIn ? (
             <a className="btn btn-primary btn-sm" href="/app">
               Open app
