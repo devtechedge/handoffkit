@@ -7,6 +7,10 @@ dist/
 *.tsbuildinfo
 next-env.d.ts
 
+# Playwright
+playwright-report/
+test-results/
+
 # Local credentials and state. Never commit these.
 .env
 .env.local
