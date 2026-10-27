@@ -1,8 +1,6 @@
 # HandoffKit
 
-Client-ready handover packs for AI automation agencies.
-
-HandoffKit turns an exported n8n workflow into a branded document that explains what the automation does, what data and AI it touches, and how to run it. It is built for agencies that hand workflows to clients and are tired of unpaid documentation work.
+HandoffKit turns an n8n export into a client-ready handover pack. It explains what the automation does, what data and AI it touches, and how to run it, in a branded document you can share with the client. Built for agencies that hand workflows to clients and are tired of unpaid documentation work.
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-handoffkit--seven.vercel.app-0b6f68)](https://handoffkit-seven.vercel.app)
 [![CI](https://github.com/devtechedge/handoffkit/actions/workflows/ci.yml/badge.svg)](https://github.com/devtechedge/handoffkit/actions/workflows/ci.yml)
