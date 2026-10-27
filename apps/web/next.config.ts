@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@handoffkit/core"],
   },
+  allowedDevOrigins: ["localhost", "127.0.0.1"],
   async headers() {
     return [
       {

@@ -2,6 +2,7 @@ import { accountPlan, type Account } from "@/lib/auth";
 import { planLabel } from "@/lib/format";
 import { Logo } from "./Logo";
 import { LogoutButton } from "./LogoutButton";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function AppHeader({ account }: { account: Account }) {
   const plan = accountPlan(account);
@@ -15,6 +16,7 @@ export function AppHeader({ account }: { account: Account }) {
           <a href="/app/settings">Settings</a>
         </nav>
         <div className="header-actions">
+          <ThemeToggle />
           <span className="account-chip">
             <span className="account-name">{account.agency_name}</span>
             <span className={`badge badge-${plan}`}>{planLabel(plan)}</span>

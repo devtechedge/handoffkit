@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   },
   description,
   applicationName: "HandoffKit",
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "HandoffKit",
     description,
@@ -41,6 +44,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("handoffkit-theme");if(t==="dark"){document.documentElement.dataset.theme="dark";}}catch(e){}})();`,
+          }}
+        />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
