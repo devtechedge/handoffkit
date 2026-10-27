@@ -29,4 +29,4 @@ npm run test:e2e
 - Never commit `.env.local` or any real credential.
 - No LLM in the analysis path. Analysis must stay deterministic.
 - Public text: no em dashes, no audience framing.
-- Keep the repo private. Do not flip it public without a review.
+- This repository is public. Never commit credentials, prospect lists or audience framing.
