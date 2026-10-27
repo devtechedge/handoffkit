@@ -805,7 +805,7 @@ svg {
 }
 
 .price-list li::before {
-  content: "âœ“";
+  content: "✓";
   position: absolute;
   left: 0;
   color: var(--accent);
@@ -921,7 +921,7 @@ svg {
 }
 
 .faq details[open] summary::after {
-  content: "âˆ’";
+  content: "−";
 }
 
 .faq details p {
@@ -1686,7 +1686,7 @@ svg {
 }
 
 .runbook-block li::before {
-  content: "Â·";
+  content: "·";
   position: absolute;
   left: 0;
   color: var(--accent);
@@ -1851,7 +1851,7 @@ svg {
 }
 
 .auth-points li::before {
-  content: "âœ“";
+  content: "✓";
   position: absolute;
   left: 0;
   color: var(--accent);
