@@ -4,7 +4,26 @@ Client-ready handover packs for AI automation agencies.
 
 HandoffKit turns an exported n8n workflow into a branded document that explains what the automation does, what data and AI it touches, and how to run it. It is built for agencies that hand workflows to clients and are tired of unpaid documentation work.
 
-Live: https://handoffkit-seven.vercel.app
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-handoffkit--seven.vercel.app-0b6f68)](https://handoffkit-seven.vercel.app)
+[![CI](https://github.com/devtechedge/handoffkit/actions/workflows/ci.yml/badge.svg)](https://github.com/devtechedge/handoffkit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-6a5acd)](LICENSE)
+
+## Live Demo
+
+https://handoffkit-seven.vercel.app
+
+> The demo runs on Vercel with the shared Neon Postgres database. Accounts, packs and
+> subscriptions use the database. Billing is integrated but disabled until Lemon Squeezy
+> environment variables are configured, so checkout stays off. The analysis is deterministic
+> and never sends workflow data to an LLM. Nothing typed into the demo is stored.
+
+## Screenshots
+
+![Home](docs/screenshots/01-home.png)
+
+![Demo with a risky sample](docs/screenshots/02-demo-risky.png)
+
+![Pricing](docs/screenshots/03-pricing.png)
 
 ## What is in a pack
 
@@ -18,15 +37,11 @@ Live: https://handoffkit-seven.vercel.app
 
 ## Status
 
-MVP, pre-revenue. The n8n importer, analysis, share page and PDF are real. Billing is integrated but disabled until Lemon Squeezy environment variables are configured. There is no AI-generated prose.
+MVP, pre-revenue. The n8n importer, analysis, share page and PDF are real. Billing is
+integrated but disabled until Lemon Squeezy environment variables are configured. There is no
+AI-generated prose.
 
-Read:
-
-- `docs/PROJECT_BRIEF.md`
-- `docs/DECISIONS.md`
-- `docs/VALIDATION_LOG.md`
-- `docs/EXPERIMENTS.md`
-- `docs/NEXT_ACTIONS.md`
+Read `docs/PROJECT_BRIEF.md` and `docs/DECISIONS.md` for the product reasoning.
 
 ## Stack
 
@@ -70,6 +85,7 @@ Never commit `.env.local`.
 ```bash
 npm test
 npm run typecheck
+npm run test:e2e
 npm run build
 npm run dev:web
 npm run db:setup
@@ -95,6 +111,7 @@ vercel --prod
 - Credential names are shown; credential values are never read or stored.
 - The parser masks secret-like values and does not put them in the pack, Markdown, PDF or events.
 - The demo does not store the submitted workflow.
+- The full threat model lives in `SECURITY.md`.
 
 ## Known limitations
 
