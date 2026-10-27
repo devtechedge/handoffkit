@@ -1,0 +1,31 @@
+{
+  "name": "handoffkit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Client-ready handover packs for AI automation agencies.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "build:core": "npm run build --workspace @handoffkit/core",
+    "build:web": "npm run build --workspace @handoffkit/core && npm run build --workspace @handoffkit/web",
+    "dev:web": "npm run dev --workspace @handoffkit/web",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "playwright test",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "db:setup": "node --env-file=.env.local scripts/db-setup.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3"
+  }
+}
