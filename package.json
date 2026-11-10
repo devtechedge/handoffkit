@@ -24,7 +24,7 @@
     "db:setup": "node --env-file=.env.local scripts/db-setup.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.56.0",
+    "@playwright/test": "^1.65.0",
     "@types/node": "^24.10.1",
     "typescript": "^5.9.3"
   }
